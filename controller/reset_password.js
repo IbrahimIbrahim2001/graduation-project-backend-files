@@ -18,18 +18,18 @@ module.exports.sendToken = (req, res, next) => {
         port: 465,
         secure: true,
         auth: {
-          user: "ahmadhajnajeeb45@gmail.com",
-          pass: "lzjjttuyhkyyjjrq",
+          user: "ibrahimibrahim.2552001@gmail.com",
+          pass: "zcdholzybchjttda",
         },
         tls: {
           rejectUnauthorized: true,
         },
       });
       const mailOptions = {
-        form: "ahmadhajnajeeb45@gmail.com",
+        form: "ibrahimibrahim.2552001@gmail.com",
         to: email,
         subject: "password reset",
-        html: `click <a href="http://localhost:3000/${token}">here</a> to confirm your identity to reset your password`,
+        html: `click <a href="http://localhost:5173/reset-password/${token}">here</a> to confirm your identity to reset your password`,
       };
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
@@ -46,6 +46,7 @@ module.exports.reSetPassword = (req, res, next) => {
   const token = req.params.token;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
+  console.log(token, req.body);
   customer
     .findOne({
       where: { resToken: token },

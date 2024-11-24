@@ -13,7 +13,7 @@ require("./Models/linking");
 require("dotenv").config();
 const port = 3000;
 const corsOption = {
-  origin: ["http://localhost:3000", "http://localhost:5173"],
+  origin: true,
   methods: ["POST", "GET"],
   credentials: true,
   optionSuccessStatus: 200,
@@ -44,5 +44,5 @@ app.use(
 );
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:port`);
+  console.log(`Server running at ${port}`);
 });

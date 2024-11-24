@@ -47,10 +47,7 @@ const Product = sequelize.define(
       type: Sequelize.STRING,
       allowNull: true,
     },
-    QReader: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
+
     AvgOfRating: {
       type: Sequelize.DOUBLE,
       defaultValue: 0,
@@ -60,15 +57,7 @@ const Product = sequelize.define(
       type: Sequelize.INTEGER,
       defaultValue: 0,
     },
-    disCount: {
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
-    },
-    Reviews: {
-      type: Sequelize.STRING,
-      allowNull: true,
-      unique: false,
-    },
+
   },
   {
     tableName: "products",

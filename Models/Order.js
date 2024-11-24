@@ -49,6 +49,10 @@ const Order = sequelize.define(
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+    isRating: {
+      type: Sequelize.TINYINT,
+      defaultValue: false
+    }
   },
   {
     tableName: "orders",

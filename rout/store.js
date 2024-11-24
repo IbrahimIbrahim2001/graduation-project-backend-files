@@ -51,17 +51,17 @@ router.post("/order", store.addToCard);
 router.post("/changeQuantity", store.changeQuantity);
 router.get("/searchProduct/:nameProduct", store.getSearch);
 
-router.post("/paid",store.postpaid);
+router.post("/paid", store.postpaid);
 router.post("/rate", store.postRate);
 router.get("/AllProduct", store.getAllProducts);
-router.get("/MyWallet" , store.getCard);
+router.get("/MyWallet", store.getCard);
 router.post("/deleteProductFromCard", store.deleteProductFromCard);
-router.post("/deleteCard" , store.deleteCard);
+router.post("/deleteCard", store.deleteCard);
 router.post("/deleteProductFromStore", store.deleteProductFromStore);
-router.post("/updateProduct",store.updateProduct);
+router.post("/updateProduct", store.updateProduct);
 router.get("/getProfile", store.getProfile);
-router.get("/Noti",store.getNote);
+router.get("/Noti", store.getNote);
 router.get('/history', store.getHistory);
 //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-router.get("/Apri", apri.returnApri);
+router.get("/Apri/:productId", apri.returnApri);
 module.exports = router;

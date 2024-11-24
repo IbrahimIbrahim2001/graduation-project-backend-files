@@ -2,8 +2,9 @@ const product = require("../Models/product");
 const order = require("../Models/Order");
 const { Sequelize, Op } = require("sequelize");
 
-const generateTransction = async () =>{
-    try {
+const generateTransction = async () => {
+
+  try {
     const items = [];
     const transactions = [];
     // Fetch distinct purchases
@@ -13,20 +14,20 @@ const generateTransction = async () =>{
       ],
       where: { Paid: { [Op.not]: false } },
     });
-    for (const item of purchases) {items.push(item.dataValues.purchase);}
+    for (const item of purchases) { items.push(item.dataValues.purchase); }
     const promises = items.map(async (i) => {
       const itom = [];
       const products = await order.findAll({
         attributes: ["productId"],
-        where: { prchase: i},
+        where: { purchase: i },
       });
-      for (const it of products) {itom.push(it.dataValues.productId);}
+      for (const it of products) { itom.push(it.dataValues.productId); }
       transactions.push(itom);
     });
     await Promise.all(promises);
     return transactions;
-}catch(error) {console.log(error);}
-} 
+  } catch (error) { console.log(error); }
+}
 const generateCombinations = (items, k) => {
   if (k === 1) return items.map((item) => [item]);
   const combinations = [];
@@ -71,10 +72,14 @@ const generateAssociationRules = (frequentItems) => {
   const rules = [];
   Object.keys(frequentItems).map((itemset) => {
     const items = itemset.split(",").map(Number);
+    console.log("75", items)
     if (items.length > 1) {
+      console.log("77", items)
       items.forEach((item) => {
         const lhs = [item];
         const rhs = items.filter((i) => i !== item);
+        console.log(items.filter((i) => i !== item));
+        console.log(rhs)
         rules.push({
           lhs: lhs,
           rhs: rhs,
@@ -99,12 +104,14 @@ const findBestRules = (rules) => {
 
 const apriori = async (minSupport) => {
   const transactions = await generateTransction();
+  // console.log(transactions);
   const allItems = Array.from(new Set(transactions.flat()));
   let allFrequentItems = [];
   let supportCount = {};
   let k = 1;
   while (true) {
-    const itemSets = generateCombinations(allItems, k);
+    const itemSets = await generateCombinations(allItems, k);
+    // console.log(itemSets);
     if (itemSets.length === 0) break;
     supportCount = countSupport(transactions, itemSets);
     const frequentItems = filterItemSets(
@@ -119,8 +126,10 @@ const apriori = async (minSupport) => {
     k++;
   }
   const frequentItemsObj = {};
+  console.log(allFrequentItems);
   allFrequentItems.forEach((item) => {
     const key = item.sort().join(",");
+    console.log(key);
     frequentItemsObj[key] = supportCount[key];
   });
   const rules = generateAssociationRules(frequentItemsObj, transactions);
@@ -128,28 +137,29 @@ const apriori = async (minSupport) => {
 };
 
 module.exports.returnApri = async (req, res, _next) => {
-    try{
-        const proId = req.body.productId;
-        const minSupport = 0.5; // Set your minimum support threshold
-        const bestRules = await apriori(minSupport);
-        const resu = [];
-        bestRules.forEach((item) => {
-        if (item.lhs == proId && item.rhs.length >= 1 && item.rhs.length <= 3) {
-          item.rhs.map((u) => {
-            resu.push(u);
-          });
-        }
+  try {
+    const proId = req.params.productId;
+    const minSupport = 0.5; // Set your minimum support threshold
+    const bestRules = await apriori(minSupport);
+
+    const resu = [];
+    bestRules.forEach((item) => {
+      if (item.lhs == proId && item.rhs.length >= 1 && item.rhs.length <= 3) {
+        item.rhs.map((u) => {
+          resu.push(u);
         });
-        const uniqueresu = [...new Set(resu)];
-        const productwithAprior = await Promise.all(
-          uniqueresu.map(async (w) => {
-            let products = await product.findOne({ where: { id: w } });
-            return products;
-          })
-        );
-        res.json(productwithAprior);
-    }
-    catch (error) {
+      }
+    });
+    const uniqueresu = [...new Set(resu)];
+    const productwithAprior = await Promise.all(
+      uniqueresu.map(async (w) => {
+        let products = await product.findOne({ where: { id: w } });
+        return products;
+      })
+    );
+    res.json(productwithAprior);
+  }
+  catch (error) {
     console.error(error);
     res
       .status(500)

@@ -24,19 +24,30 @@ const Notifications = sequelize.define("note", {
     },
     allowedNull: true,
   },
-  customer_first:{
-    type:Sequelize.STRING,
-    allowedNull : true,
+  customer_first: {
+    type: Sequelize.STRING,
+    allowedNull: true,
     unique: false
   },
-  customer_second:{
-    type:Sequelize.STRING,
-    allowedNull : true,
+  customer_second: {
+    type: Sequelize.STRING,
+    allowedNull: true,
     unique: false
   },
-  product:{
-    type:Sequelize.STRING,
-    allowedNull : true,
+  address: {
+    type: Sequelize.STRING,
+    allowedNull: true,
+    unique: false
+  },
+  phone: {
+    type: Sequelize.STRING,
+    allowedNull: true,
+    unique: false
+  },
+
+  product: {
+    type: Sequelize.STRING,
+    allowedNull: true,
     unique: false
   },
   ProductId: {
