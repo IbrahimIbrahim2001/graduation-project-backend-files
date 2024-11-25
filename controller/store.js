@@ -123,7 +123,6 @@ module.exports.addToCard = async (req, res, _next) => {
       }
     }
   } catch (err) {
-    console.log(err);
     res.status(500).json({ error: "Error fetching orders", details: err });
   }
 };
