@@ -14,13 +14,14 @@ require("dotenv").config();
 const port = 3000;
 const corsOption = {
   origin: true,
-  methods: ["POST", "GET"],
+  methods: ["POST", "GET", "PUT", "DELETE"],
   credentials: true,
   optionSuccessStatus: 200,
 };
 /*_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_*/
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
+app.options("", cors(corsOption))
 app.use(cors(corsOption));
 app.use(express.json()); //this is to accept data in json format
 app.use(express.urlencoded({ extended: true })); //this is basically to decode the data send through html form
