@@ -45,6 +45,9 @@ app.use(
 );
 
 
+app.get("/", (_req, res) => res.send("Express is running"))
+
+
 app.listen(port, () => {
   console.log(`Server running at ${port}`);
 });
